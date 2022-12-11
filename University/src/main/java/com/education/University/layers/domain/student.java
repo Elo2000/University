@@ -5,15 +5,18 @@ import java.util.Objects;
 
 public class student {
     private String name;
-    private Integer id;
+    private Long id;
     private boolean graduated;
+
+
+
     private String email;
     private Integer phoneNum;
 
     public student() {
     }
 
-    public student(String name, Integer id, boolean graduated, String email, Integer phoneNum) {
+    public student(String name, Long id, boolean graduated, String email, Integer phoneNum) {
         this.name = name;
         this.id = id;
         this.graduated = graduated;
@@ -29,11 +32,11 @@ public class student {
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -72,5 +75,15 @@ public class student {
     @Override
     public int hashCode() {
         return Objects.hash(name, id, graduated, email, phoneNum);
+    }
+    @Override
+    public String toString() {
+        return "student{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", graduated=" + graduated +
+                ", email='" + email + '\'' +
+                ", phoneNum=" + phoneNum +
+                '}';
     }
 }

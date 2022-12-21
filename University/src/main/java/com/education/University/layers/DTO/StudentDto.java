@@ -1,28 +1,20 @@
-package com.education.University.layers.domain;
-// object in data storage
+package com.education.University.layers.DTO;
 
-import java.util.Objects;
-
-public class student {
+public class StudentDto {
     private String name;
     private Long id;
     private boolean graduated;
-
-
-
     private String email;
     private Integer phoneNum;
 
-    public student() {
-    }
-
-    public student(String name, Long id, boolean graduated, String email, Integer phoneNum) {
+    public StudentDto(String name, boolean graduated, String email, Integer phoneNum) {
         this.name = name;
         this.id = id;
         this.graduated = graduated;
         this.email = email;
         this.phoneNum = phoneNum;
     }
+    public StudentDto(){}
 
     public String getName() {
         return name;
@@ -31,12 +23,11 @@ public class student {
     public void setName(String name) {
         this.name = name;
     }
-
     public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -65,20 +56,8 @@ public class student {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        student student = (student) o;
-        return graduated == student.graduated && Objects.equals(name, student.name) && Objects.equals(id, student.id) && Objects.equals(email, student.email) && Objects.equals(phoneNum, student.phoneNum);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, id, graduated, email, phoneNum);
-    }
-    @Override
     public String toString() {
-        return "student{" +
+        return "StudentDto{" +
                 "name='" + name + '\'' +
                 ", id=" + id +
                 ", graduated=" + graduated +

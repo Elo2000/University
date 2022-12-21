@@ -1,9 +1,10 @@
 package com.education.University.layers;
-import com.education.University.layers.domain.student;
+import com.education.University.layers.domain.Student;
 import com.education.University.layers.repository.StudentRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class AppMainActivity {
@@ -14,8 +15,18 @@ public class AppMainActivity {
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomething(){
-        student stu = Repos.getstudent(311678060L);
+        Student stu = Repos.getstudent(311678060L);
         System.out.println("Student is :"+stu);
+
+        Student newcreatedstudent=new Student("Samir ", 322654080L,false,"samir12@gmail.com",0547733222);
+        Student createdStudent=Repos.createStudent(newcreatedstudent);
+        System.out.println(createdStudent);
+
+        Student studenttobeupdated=new Student("Samir update ",2L, true,"samir12@gmail.com",0547733222);
+        Student updatedbook=Repos.updateStudent(studenttobeupdated,2L);
+        System.out.println(updatedbook );
+
+        Repos.deleteStudent(311543090L);
     }
 }
 

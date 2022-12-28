@@ -1,11 +1,13 @@
 package com.education.University.layers.repository;
 import com.education.University.layers.domain.Student;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.Optional;
 
 
 @Repository
@@ -18,9 +20,14 @@ public class StudentRepository {
         this.jdbcTemplate = jdbcTemplate;
         this.rowMapper = StudentRowMapper1;
     }
-    public Student getStudent(Long id){
+    public Optional <Student> getStudent(Long id){
+        try{
             Student student = jdbcTemplate.queryForObject("Select * From \"Students\" Where id=?",rowMapper,id);
-            return student;
+            return Optional.ofNullable(student);
+        }
+        catch (EmptyResultDataAccessException e){
+            return Optional.empty();
+        }
     }
     public Student createStudent(Student student){
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
@@ -37,9 +44,9 @@ public class StudentRepository {
                    keyHolder);
 
         long generatedKey = keyHolder.getKey().longValue();
-        return getStudent(generatedKey);
+        return getStudent(generatedKey).get();
     }
-    public Student updateStudent(Student student,Long id){
+    public Optional <Student> updateStudent(Student student,Long id){
         jdbcTemplate.update(con ->  {
             PreparedStatement preparedStatement = con.prepareStatement("UPDATE public.students\n" +
                         "\tSET name=? ,graduated=?, email=?, phone_number=?\n" +
@@ -52,11 +59,12 @@ public class StudentRepository {
                 return preparedStatement;
             });
 
-        return getStudent(id) ;
+        return getStudent(id);
     }
     public void deleteStudent(Long id) {
 
         jdbcTemplate.update("DELETE FROM public.\"Students\" WHERE id=?;",id);
     }
+
 
 }

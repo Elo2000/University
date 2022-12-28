@@ -1,4 +1,5 @@
 package com.education.University.layers.service;
+
 import com.education.University.layers.DTO.StudentDto;
 import com.education.University.layers.convert.StudentConverter;
 import com.education.University.layers.domain.Student;
@@ -25,8 +26,8 @@ public class StudentService {
         checkExisting(id);
         validate(studentDto);
 
-        Student createdStudent=Repository.updateStudent(studentConverter.fromDto(studentDto),id);
-        return studentConverter.fromDomain(createdStudent);
+      return Repository.updateStudent(studentConverter.fromDto(studentDto),id)
+                .map(s -> studentConverter.fromDomain(s)).get();
     }
     public void deleteStudent(Long id) {
        checkExisting(id);
@@ -38,12 +39,19 @@ public class StudentService {
         }
     }
     private void checkExisting(Long id) {
-        Student student=Repository.getStudent(id);
-        if(student != null){
-            System.out.println("Delete student with id:" + id);
-        }
-        else{
-            throw new DataNotFoundException("Book with id" + id + " is not found");
-        }
+//        Student student=Repository.getStudent(id);
+//        if(student != null){
+//            System.out.println("Delete student with id:" + id);
+//        }
+//        else{
+//            throw new DataNotFoundException("Book with id" + id + " is not found");
+//        }
+        Repository
+                .getStudent(id)
+                .map(s ->{
+                    System.out.println("checkingExisting student with id:" + id);
+                    return s;
+                })
+                .orElseThrow(()->new DataNotFoundException("Book with id" + id + " is not found"));
     }
 }

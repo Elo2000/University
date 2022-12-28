@@ -15,7 +15,7 @@ public class AppMainActivity {
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomething(){
-        Student stu = Repos.getstudent(311678060L);
+        Student stu = Repos.getStudent(311678060L).get();
         System.out.println("Student is :"+stu);
 
         Student newcreatedstudent=new Student("Samir ", 322654080L,false,"samir12@gmail.com",0547733222);
@@ -23,7 +23,7 @@ public class AppMainActivity {
         System.out.println(createdStudent);
 
         Student studenttobeupdated=new Student("Samir update ",2L, true,"samir12@gmail.com",0547733222);
-        Student updatedbook=Repos.updateStudent(studenttobeupdated,2L);
+        Student updatedbook=Repos.updateStudent(studenttobeupdated,2L).get();
         System.out.println(updatedbook );
 
         Repos.deleteStudent(311543090L);

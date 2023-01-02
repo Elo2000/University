@@ -1,6 +1,6 @@
 package com.education.University.layers.convert;
 
-import com.education.University.layers.DTO.StudentDto;
+import com.education.University.layers.dto.StudentDto;
 import com.education.University.layers.domain.Student;
 import org.springframework.stereotype.Component;
 

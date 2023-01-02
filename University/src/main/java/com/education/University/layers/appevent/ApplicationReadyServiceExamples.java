@@ -1,6 +1,6 @@
 package com.education.University.layers.appevent;
 
-import com.education.University.layers.DTO.StudentDto;
+import com.education.University.layers.dto.StudentDto;
 import com.education.University.layers.exceptions.ApplicationException;
 import com.education.University.layers.service.StudentService;
 import org.springframework.boot.context.event.ApplicationReadyEvent;

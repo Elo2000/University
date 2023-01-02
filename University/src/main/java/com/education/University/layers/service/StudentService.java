@@ -1,12 +1,14 @@
 package com.education.University.layers.service;
 
-import com.education.University.layers.DTO.StudentDto;
+import com.education.University.layers.dto.StudentDto;
 import com.education.University.layers.convert.StudentConverter;
 import com.education.University.layers.domain.Student;
 import com.education.University.layers.exceptions.DataNotFoundException;
 import com.education.University.layers.exceptions.SemanticException;
 import com.education.University.layers.repository.StudentRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -16,6 +18,13 @@ public class StudentService {
         this.Repository = Repository;
         this.studentConverter = studentConverter;
     }
+
+    public List<StudentDto> getStudents() {
+        return Repository.getStudents().
+                stream()
+                .map(student -> studentConverter.fromDomain(student)).toList();
+    }
+
     public StudentDto createStudent(StudentDto studentDto){
         validate(studentDto);
 
@@ -53,5 +62,10 @@ public class StudentService {
                     return s;
                 })
                 .orElseThrow(()->new DataNotFoundException("Book with id" + id + " is not found"));
+    }
+
+    public StudentDto getStudent(Long id) {
+        return Repository.getStudent(id).map(s -> studentConverter.fromDomain(s)).
+                orElseThrow(()->new DataNotFoundException("Book with id" + id + " is not found"));
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -67,4 +68,8 @@ public class StudentRepository {
     }
 
 
+    public List<Student> getStudents() {
+        return jdbcTemplate.query("select * from students",rowMapper);
+
+    }
 }

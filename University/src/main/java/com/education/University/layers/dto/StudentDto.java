@@ -1,4 +1,4 @@
-package com.education.University.layers.DTO;
+package com.education.University.layers.dto;
 
 public class StudentDto {
     private String name;
@@ -14,7 +14,9 @@ public class StudentDto {
         this.email = email;
         this.phoneNum = phoneNum;
     }
-    public StudentDto(){}
+    public StudentDto(){
+      // System.out.println("Default constructor");
+    }
 
     public String getName() {
         return name;

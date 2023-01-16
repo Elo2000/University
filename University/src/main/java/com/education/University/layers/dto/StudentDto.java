@@ -15,7 +15,6 @@ public class StudentDto {
         this.phoneNum = phoneNum;
     }
     public StudentDto(){
-      // System.out.println("Default constructor");
     }
 
     public String getName() {

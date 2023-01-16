@@ -10,7 +10,16 @@ public class Student {
     private String email;
     private Integer phoneNum;
 
+    public Student() {
+    }
+
     public Student(String name, boolean graduated, String email, Integer phoneNum) {
+        this.name = name;
+        this.graduated = graduated;
+        this.email = email;
+        this.phoneNum = phoneNum;
+        this.id = id;
+
     }
 
     public Student(String name, Long id, boolean graduated, String email, Integer phoneNum) {

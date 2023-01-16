@@ -25,10 +25,10 @@ public class ApplicationConfig {
     public RowMapper<Student> studentRowMapper1() {
         return new BeanPropertyRowMapper<>(Student.class);
     }
-    @Bean
-    public RowMapper<Student> studentRowMapper2() {
-        return new BeanPropertyRowMapper<>(Student.class);
-    }
+//    @Bean
+//    public RowMapper<Student> studentRowMapper2() {
+//        return new BeanPropertyRowMapper<>(Student.class);
+//    }
 
 
 

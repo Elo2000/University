@@ -21,9 +21,9 @@ public class StudentRepository {
         this.jdbcTemplate = jdbcTemplate;
         this.rowMapper = StudentRowMapper1;
     }
-    public Optional <Student> getStudent(Long id){
+    public Optional<Student> getStudent(Long id){
         try{
-            Student student = jdbcTemplate.queryForObject("Select * From \"Students\" Where id=?",rowMapper,id);
+            Student student = jdbcTemplate.queryForObject("Select * From \"students\" Where id=?",rowMapper,id);
             return Optional.ofNullable(student);
         }
         catch (EmptyResultDataAccessException e){
@@ -33,7 +33,7 @@ public class StudentRepository {
     public Student createStudent(Student student){
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO public.students(\n" +
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO students(\n" +
                                 "\tname, graduated, email, phone_number)\n\tVALUES (?, ?, ?, ?)",new String[]{"id"});
                     preparedStatement.setString(1, student.getName());
                     preparedStatement.setBoolean(2, student.isGraduated());
@@ -49,7 +49,7 @@ public class StudentRepository {
     }
     public Optional <Student> updateStudent(Student student,Long id){
         jdbcTemplate.update(con ->  {
-            PreparedStatement preparedStatement = con.prepareStatement("UPDATE public.students\n" +
+            PreparedStatement preparedStatement = con.prepareStatement("UPDATE students\n" +
                         "\tSET name=? ,graduated=?, email=?, phone_number=?\n" +
                         "\tWHERE  id =?");
                 preparedStatement.setString(1, student.getName());
@@ -64,7 +64,7 @@ public class StudentRepository {
     }
     public void deleteStudent(Long id) {
 
-        jdbcTemplate.update("DELETE FROM public.\"Students\" WHERE id=?;",id);
+        jdbcTemplate.update("DELETE FROM students WHERE id=?;",id);
     }
 
 

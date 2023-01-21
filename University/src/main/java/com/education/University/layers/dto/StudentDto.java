@@ -2,7 +2,7 @@ package com.education.University.layers.dto;
 
 public class StudentDto {
     private String name;
-    private Long id;
+    private long id;
     private boolean graduated;
     private String email;
     private Integer phoneNum;

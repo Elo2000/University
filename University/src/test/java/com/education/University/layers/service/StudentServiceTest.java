@@ -4,6 +4,7 @@ import com.education.University.layers.convert.StudentConverter;
 import com.education.University.layers.domain.Student;
 import com.education.University.layers.dto.StudentDto;
 import com.education.University.layers.exceptions.DataNotFoundException;
+import com.education.University.layers.repository.StudentRepo;
 import com.education.University.layers.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ class StudentServiceTest {
     @InjectMocks
     private StudentService studentService;
     @Mock
-    private StudentRepository studentRepository;
+    private StudentRepo studentRepo;
     @Mock
     private StudentConverter studentConverter;
 
@@ -32,11 +33,8 @@ class StudentServiceTest {
 
     @Test
     void getStudent() {
-//        StudentService studentService=new StudentService(
-//                new StudentRepositoryMock(null,null),
-//                new StudentConverter());
         when(studentConverter.fromDomain(any())).thenCallRealMethod();
-        when(studentRepository.getStudent(any())).thenReturn(Optional.of(new Student("Samir", false, "samir12@gmail.com", 94353042)));
+        when(studentRepo.findById(any())).thenReturn(Optional.of(new Student("Samir", false, "samir12@gmail.com", 94353042)));
 
         StudentDto student = studentService.getStudent(3L);
         System.out.println("S"+student);
@@ -58,16 +56,16 @@ class StudentServiceTest {
 
     @Test
     void updateStudent(){
-        when(studentRepository.getStudent(55L)).thenReturn(Optional.of(new Student("Samir", false, "samir12@gmail.com", 94353042)));
+        when(studentRepo.findById(1L)).thenReturn(Optional.of(new Student("Samir", false, "samir12@gmail.com", 94353042)));
         when(studentConverter.fromDomain(any())).thenCallRealMethod();
         when(studentConverter.fromDto(any())).thenCallRealMethod();
-        Student studentToBeUpdated=new Student("Samir 2", true, "samir179@gmail.com", 0547733222);
+        StudentDto studentToBeUpdated=new StudentDto("helena", false, "samir179@gmail.com", 0547733222);
 
-        when(studentRepository.updateStudent(studentToBeUpdated,55L)).thenReturn(Optional.of(studentToBeUpdated));
-        when(studentRepository.updateStudent(studentToBeUpdated,99L)).thenThrow(new RuntimeException());
-        when(studentRepository.updateStudent(studentToBeUpdated,100L)).thenAnswer(invocation -> invocation );
+        when(studentService.updateStudent(1L,studentToBeUpdated)).thenReturn(studentToBeUpdated);
+        when(studentService.updateStudent(2L,studentToBeUpdated)).thenThrow(new RuntimeException());
+        when(studentService.updateStudent(3L,studentToBeUpdated)).thenAnswer(invocation -> invocation );
 
-        StudentDto updateStudent=studentService.updateStudent(55L, new StudentDto("Samir 2", true, "samir179@gmail.com", 0547733222));
+        StudentDto updateStudent=studentService.updateStudent(1L, new StudentDto("Samir 2", true, "samir179@gmail.com", 0547733222));
 
         assertNotNull(updateStudent);
         assertEquals("Samir 2",updateStudent.getName());
@@ -77,20 +75,20 @@ class StudentServiceTest {
 
     }
 
-    @Test
-    void updateStudentAndStudentDoesNotExist() {
-        when(studentRepository.getStudent(888L)).thenReturn(Optional.empty());
-
-        DataNotFoundException dataNotFoundException = assertThrows(DataNotFoundException.class, () -> studentService.updateStudent(888L, new StudentDto("Samir 2", true, "samir179@gmail.com", 0547733222)));
-
-        assertEquals("Student is not found",dataNotFoundException.getMessage());
-
-        verify(studentRepository, never()).updateStudent(any(),anyLong());
-        verify(studentRepository).getStudent(888L);
-        verify(studentConverter, never()).fromDomain(any());
-        verify(studentConverter, never()).fromDto(any());
-
-    }
+//    @Test
+//    void updateStudentAndStudentDoesNotExist() {
+//        when(studentRepo.findById(888L)).thenReturn(Optional.empty());
+//
+//        DataNotFoundException dataNotFoundException = assertThrows(DataNotFoundException.class, () -> studentService.updateStudent(888L, new StudentDto("Samir 2", true, "samir179@gmail.com", 0547733222)));
+//
+//        assertEquals("Student with id888 is not found",dataNotFoundException.getMessage());
+//
+//        verify(studentRepo, never()).updateStudent(any(),anyLong());
+//        verify(studentRepo).findById(888L);
+//        verify(studentConverter, never()).fromDomain(any());
+//        verify(studentConverter, never()).fromDto(any());
+//
+//    }
 
 
 

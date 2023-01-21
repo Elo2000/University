@@ -1,15 +1,24 @@
 package com.education.University.layers.domain;
-// object in data storage
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "Students")
 public class Student {
     private String name;
+    @Id
+    @GeneratedValue(generator = "students_id_seq")
     private Long id;
     private boolean graduated;
     private String email;
-    private Integer phoneNum;
+   @Column(name = "Phone_number")
+    private Integer phoneNumSS;
 
+    @Transient
+    private String anotherField;
+
+    // Default Constructor is mandatory in hibernate entity
     public Student() {
     }
 
@@ -17,7 +26,7 @@ public class Student {
         this.name = name;
         this.graduated = graduated;
         this.email = email;
-        this.phoneNum = phoneNum;
+        this.phoneNumSS = phoneNum;
         this.id = id;
 
     }
@@ -27,8 +36,10 @@ public class Student {
         this.id = id;
         this.graduated = graduated;
         this.email = email;
-        this.phoneNum = phoneNum;
+        this.phoneNumSS = phoneNum;
     }
+
+
 
     public String getName() {
         return name;
@@ -63,11 +74,11 @@ public class Student {
     }
 
     public Integer getPhoneNum() {
-        return phoneNum;
+        return phoneNumSS;
     }
 
     public void setPhoneNum(Integer phoneNum) {
-        this.phoneNum = phoneNum;
+        this.phoneNumSS = phoneNum;
     }
 
     @Override
@@ -75,12 +86,12 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return graduated == student.graduated && Objects.equals(name, student.name) && Objects.equals(id, student.id) && Objects.equals(email, student.email) && Objects.equals(phoneNum, student.phoneNum);
+        return graduated == student.graduated && Objects.equals(name, student.name) && Objects.equals(id, student.id) && Objects.equals(email, student.email) && Objects.equals(phoneNumSS, student.phoneNumSS);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, graduated, email, phoneNum);
+        return Objects.hash(name, id, graduated, email, phoneNumSS);
     }
     @Override
     public String toString() {
@@ -89,7 +100,7 @@ public class Student {
                 ", id=" + id +
                 ", graduated=" + graduated +
                 ", email='" + email + '\'' +
-                ", phoneNum=" + phoneNum +
+                ", phoneNum=" + phoneNumSS +
                 '}';
     }
 

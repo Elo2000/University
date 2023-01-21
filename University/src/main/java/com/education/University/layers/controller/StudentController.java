@@ -27,8 +27,17 @@ public class StudentController {
     // REST best practices
     // GET http://localhost:8080/students/
     @RequestMapping(method = RequestMethod.GET)
-    public List<StudentDto> getStudent() {
-        return studentService.getStudents();
+    public List<StudentDto> getStudents(@RequestParam("nameStartWith")String nameStartWith) {
+        if(nameStartWith==null){
+            return  studentService.getStudents();
+        }
+        else {
+            return studentService.getStudentStartWith(nameStartWith);
+        }
+    }
+    @RequestMapping(path ="/search", method = RequestMethod.GET)
+    public List<StudentDto> search(@RequestParam("name") String name) {
+        return studentService.searchByName(name);
     }
 
     // POST http://localhost:8080/students/

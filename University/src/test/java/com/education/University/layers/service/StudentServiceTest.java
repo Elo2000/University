@@ -5,6 +5,7 @@ import com.education.University.layers.domain.Student;
 import com.education.University.layers.dto.StudentDto;
 import com.education.University.layers.exceptions.DataNotFoundException;
 import com.education.University.layers.repository.StudentRepo;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -54,14 +55,18 @@ class StudentServiceTest {
 
    @Test
     void updateStudent(){
+
         when(studentRepo.findById(1L)).thenReturn(Optional.of(new Student("Samir",1L, false, "samir12@gmail.com", 94353042)));
+
         when(studentConverter.fromDomain(any())).thenCallRealMethod();
         when(studentConverter.fromDto(any())).thenCallRealMethod();
         StudentDto studentToBeUpdated=new StudentDto("helena", false, "samir179@gmail.com", 0547733222);
 
+
         when(studentRepo.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
     //   when(studentRepo.save(any())).thenThrow(new RuntimeException());
     //   when(studentRepo.save(any())).thenAnswer(invocation -> invocation );
+
 
         StudentDto updateStudent=studentService.updateStudent(1L, new StudentDto("Samir 2", true, "samir179@gmail.com", 0547733222));
 
@@ -72,6 +77,7 @@ class StudentServiceTest {
         assertEquals(0547733222,updateStudent.getPhoneNum());
 
     }
+
 
     @Test
     void updateStudentAndStudentDoesNotExist() {
@@ -87,6 +93,7 @@ class StudentServiceTest {
         verify(studentConverter, never()).fromDto(any());
 
     }
+
 
 
 

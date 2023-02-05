@@ -49,7 +49,9 @@ public class StudentService {
                           return studentRepo.save(foundStudent);
                       })
                       .map(savedStudent -> studentConverter.fromDomain(savedStudent))
+
                       .orElseThrow(()-> new DataNotFoundException("Student with id " + id + " is not found"));
+
     }
 
     public void deleteStudent(Long id) {

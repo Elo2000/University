@@ -16,9 +16,9 @@ public class ApplicationReadyServiceExamples {
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
         try {
-            StudentDto student;
-            student = studentService.createStudent(new StudentDto("Helena", true, "Helena.kh@gmail.com", 288));
-            System.out.println(student);
+       //     StudentDto student;
+         //   student = studentService.createStudent(new StudentDto("Helena", true, "Helena.kh@gmail.com", 288));
+          //  System.out.println(student);
         } catch (ApplicationException e) {
             System.out.println(e.getMessage());
         }

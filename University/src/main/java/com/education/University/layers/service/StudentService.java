@@ -5,8 +5,9 @@ import com.education.University.layers.convert.StudentConverter;
 import com.education.University.layers.domain.Student;
 import com.education.University.layers.exceptions.DataNotFoundException;
 import com.education.University.layers.exceptions.SemanticException;
+import com.education.University.layers.jms.JmsStudentDeleteDto;
+import com.education.University.layers.jms.JmsStudentSender;
 import com.education.University.layers.repository.StudentRepo;
-import com.education.University.layers.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,13 +18,17 @@ import java.util.Optional;
 public class StudentService {
     private StudentRepo studentRepo;
     //private StudentRepository repository;
+    private JmsStudentSender sender;
 
     private StudentConverter studentConverter;
-    public StudentService( StudentConverter studentConverter,StudentRepo studentRepo) {
+    private JmsStudentSender notifier;
+
+    public StudentService(StudentConverter studentConverter, StudentRepo studentRepo, JmsStudentSender sender) {
        // System.out.println("Constructor is called");
       //  this.repository = repository;
         this.studentConverter = studentConverter;
         this.studentRepo=studentRepo;
+        this.sender = sender;
     }
 
     public List<StudentDto> getStudents() {
@@ -55,22 +60,25 @@ public class StudentService {
     }
 
     public void deleteStudent(Long id) {
-       checkExisting(id);
+       StudentDto studentToDelete=checkExisting(id);
        studentRepo.deleteById(id);
+        notifier.sendDeleteMessage(new JmsStudentDeleteDto(
+               studentToDelete.getPhoneNum().toString(),
+               studentToDelete.getId()));
     }
     private void validate(StudentDto studentDto) {
         if(studentDto.getPhoneNum()<10){
             throw new SemanticException("Phone number should be larger than 10");
         }
     }
-    private void checkExisting(Long id) {
-
-        studentRepo
+    private StudentDto checkExisting(Long id) {
+         return studentRepo
                 .findById(id)
                 .map(s ->{
                     System.out.println("checkingExisting student with id:" + id);
                     return s;
                 })
+                .map(s ->studentConverter.fromDomain(s))
                 .orElseThrow(()->new DataNotFoundException("Student with id " + id + " is not found"));
     }
 
